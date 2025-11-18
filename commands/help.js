@@ -68,10 +68,8 @@ module.exports = {
       components: [row],
       fetchReply: true 
     });
-
-    // Create collector for menu interactions
     const collector = message.createMessageComponentCollector({ 
-      time: 300000 // 5 minutes
+      time: 300000
     });
 
     collector.on('collect', async (i) => {
