@@ -29,17 +29,11 @@ module.exports = {
     
     const xpForNextLevel = getXPForLevel(userData.level);
     const xpProgress = Math.floor((userData.xp / xpForNextLevel) * 100);
-    
-    // Calculate percentile
     const totalUsers = leaderboard.length;
     const percentile = totalUsers > 0 ? Math.round((1 - (rank - 1) / totalUsers) * 100) : 100;
-
-    // Calculate average XP per message
     const avgXpPerMessage = userData.messages > 0 
       ? Math.round(userData.total_xp / userData.messages) 
       : 0;
-
-    // Estimate messages to next level
     const xpNeeded = xpForNextLevel - userData.xp;
     const messagesToLevel = avgXpPerMessage > 0 
       ? Math.ceil(xpNeeded / avgXpPerMessage)
@@ -68,8 +62,6 @@ module.exports = {
       )
       .setFooter({ text: `Server: ${interaction.guild.name}` })
       .setTimestamp();
-
-    // Add progress bar
     const progressBarLength = 20;
     const filledLength = Math.round((userData.xp / xpForNextLevel) * progressBarLength);
     const emptyLength = progressBarLength - filledLength;
