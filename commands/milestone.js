@@ -25,14 +25,10 @@ module.exports = {
 
     const userData = await getUser(target.id, interaction.guild.id);
     const roleRewards = await getRoleRewards(interaction.guild.id);
-    
-    // Find next role rewards
     const nextRewards = roleRewards
       .filter(reward => reward.level > userData.level)
       .sort((a, b) => a.level - b.level)
       .slice(0, 3);
-
-    // Calculate level milestones
     const milestones = [10, 25, 50, 75, 100].filter(lvl => lvl > userData.level);
     const nextMilestones = milestones.slice(0, 3);
 
@@ -41,8 +37,6 @@ module.exports = {
       .setTitle(`🎯 Milestones for ${target.username}`)
       .setThumbnail(target.displayAvatarURL({ dynamic: true }))
       .setDescription(`**Current Level:** ${userData.level}\n**Total XP:** ${userData.total_xp.toLocaleString()}`);
-
-    // Next level
     const xpForNextLevel = getXPForLevel(userData.level);
     const xpNeeded = xpForNextLevel - userData.xp;
     embed.addFields({
@@ -50,8 +44,6 @@ module.exports = {
       value: `**Level ${userData.level + 1}**\n${xpNeeded.toLocaleString()} XP needed\n${userData.xp.toLocaleString()} / ${xpForNextLevel.toLocaleString()} XP`,
       inline: false
     });
-
-    // Next role rewards
     if (nextRewards.length > 0) {
       const rewardsText = nextRewards.map(reward => {
         const role = interaction.guild.roles.cache.get(reward.role_id);
@@ -75,8 +67,6 @@ module.exports = {
         inline: false
       });
     }
-
-    // Level milestones
     if (nextMilestones.length > 0) {
       const milestonesText = nextMilestones.map(level => {
         const totalXPNeeded = getTotalXPForLevel(level);
