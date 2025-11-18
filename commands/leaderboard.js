@@ -19,7 +19,7 @@ module.exports = {
     const itemsPerPage = 10;
     const offset = (page - 1) * itemsPerPage;
 
-    const leaderboardData = await getLeaderboard(interaction.guild.id, 100); // Get top 100
+    const leaderboardData = await getLeaderboard(interaction.guild.id, 100);
     const totalPages = Math.ceil(leaderboardData.length / itemsPerPage);
 
     if (page > totalPages && totalPages > 0) {
