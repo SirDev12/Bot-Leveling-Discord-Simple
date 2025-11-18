@@ -1,7 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('leveling.sqlite');
 
-// Promisify database methods
 const run = (sql, params = []) => {
   return new Promise((resolve, reject) => {
     db.run(sql, params, function(err) {
@@ -29,7 +28,6 @@ const all = (sql, params = []) => {
   });
 };
 
-// Initialize database tables
 db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS users (
@@ -94,7 +92,6 @@ db.serialize(() => {
 module.exports = {
   db,
   
-  // User functions
   getUser: async (userId, guildId) => {
     await run('INSERT OR IGNORE INTO users (user_id, guild_id) VALUES (?, ?)', [userId, guildId]);
     return await get('SELECT * FROM users WHERE user_id = ? AND guild_id = ?', [userId, guildId]);
@@ -136,7 +133,6 @@ module.exports = {
     );
   },
   
-  // Guild config functions
   getGuildConfig: async (guildId) => {
     await run('INSERT OR IGNORE INTO guild_config (guild_id) VALUES (?)', [guildId]);
     return await get('SELECT * FROM guild_config WHERE guild_id = ?', [guildId]);
@@ -149,7 +145,6 @@ module.exports = {
     );
   },
   
-  // Role rewards functions
   getRoleRewards: async (guildId) => {
     return await all('SELECT * FROM role_rewards WHERE guild_id = ? ORDER BY level ASC', [guildId]);
   },
@@ -165,8 +160,7 @@ module.exports = {
   removeRoleReward: async (guildId, level) => {
     return await run('DELETE FROM role_rewards WHERE guild_id = ? AND level = ?', [guildId, level]);
   },
-  
-  // Ignored channels functions
+
   getIgnoredChannels: async (guildId) => {
     return await all('SELECT channel_id FROM ignored_channels WHERE guild_id = ?', [guildId]);
   },
@@ -179,7 +173,6 @@ module.exports = {
     return await run('DELETE FROM ignored_channels WHERE guild_id = ? AND channel_id = ?', [guildId, channelId]);
   },
   
-  // Voice time functions
   getVoiceTime: async (userId, guildId) => {
     return await get('SELECT * FROM voice_time WHERE user_id = ? AND guild_id = ?', [userId, guildId]);
   },
