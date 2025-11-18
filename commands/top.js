@@ -35,8 +35,6 @@ module.exports = {
         content: '❌ No users with XP found in this server!'
       });
     }
-
-    // Sort based on category
     let sortedUsers;
     let categoryName;
     let emoji;
@@ -53,14 +51,12 @@ module.exports = {
         emoji = '💬';
         break;
       default:
-        sortedUsers = leaderboard; // Already sorted by total_xp
+        sortedUsers = leaderboard;
         categoryName = 'Total XP';
         emoji = '⭐';
     }
 
     const topUsers = sortedUsers.slice(0, amount);
-
-    // Fetch usernames
     const userDataPromises = topUsers.map(async (userData, index) => {
       try {
         const user = await interaction.client.users.fetch(userData.user_id);
@@ -92,8 +88,6 @@ module.exports = {
       .setDescription(userList.join('\n'))
       .setFooter({ text: `Server: ${interaction.guild.name} • Use /top to view different categories` })
       .setTimestamp();
-
-    // Add statistics
     const totalValue = topUsers.reduce((sum, user) => {
       switch (category) {
         case 'level':
