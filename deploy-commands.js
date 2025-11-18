@@ -7,7 +7,6 @@ const commands = [];
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
-// Load all commands
 for (const file of commandFiles) {
   const filePath = path.join(commandsPath, file);
   const command = require(filePath);
@@ -17,7 +16,6 @@ for (const file of commandFiles) {
 
 const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 
-// Deploy commands globally
 (async () => {
   try {
     console.log(`🔄 Started refreshing ${commands.length} application (/) commands globally.`);
