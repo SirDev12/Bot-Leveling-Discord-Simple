@@ -36,7 +36,6 @@ module.exports = {
     const xpForNextLevel = getXPForLevel(userData.level);
 
     try {
-      // Generate rank card
       const cardBuffer = await createRankCard({
         rank,
         level: userData.level,
@@ -45,8 +44,6 @@ module.exports = {
         messages: userData.messages,
         xpForNextLevel
       }, member);
-
-      // If canvas not available, use embed instead
       if (!cardBuffer) {
         const progressPercent = Math.floor((userData.xp / xpForNextLevel) * 100);
         const progressBar = '█'.repeat(Math.floor(progressPercent / 5)) + '░'.repeat(20 - Math.floor(progressPercent / 5));
