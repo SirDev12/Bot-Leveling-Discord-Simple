@@ -29,8 +29,6 @@ module.exports = {
         color: roleColor
       };
     });
-
-    // Group rewards by level ranges for better display
     const description = rewardsList.map((reward, index) => {
       const emoji = reward.level >= 50 ? '💎' : reward.level >= 30 ? '🥇' : reward.level >= 10 ? '🥈' : '🥉';
       return `${emoji} **Level ${reward.level}** → ${reward.role}`;
