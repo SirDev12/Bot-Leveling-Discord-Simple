@@ -23,7 +23,6 @@ module.exports = {
 
     if (subcommand === 'create') {
       try {
-        // Get all data for this guild
         const users = await new Promise((resolve, reject) => {
           db.all('SELECT * FROM users WHERE guild_id = ?', [interaction.guild.id], (err, rows) => {
             if (err) reject(err);
@@ -94,8 +93,6 @@ module.exports = {
           embeds: [embed],
           files: [attachment]
         });
-
-        // Clean up file after sending
         setTimeout(() => {
           if (fs.existsSync(filePath)) {
             fs.unlinkSync(filePath);
@@ -122,8 +119,6 @@ module.exports = {
             }
           );
         });
-
-        // Fetch usernames
         const exportData = await Promise.all(users.map(async (user, index) => {
           try {
             const discordUser = await interaction.client.users.fetch(user.user_id);
@@ -177,8 +172,6 @@ module.exports = {
           embeds: [embed],
           files: [attachment]
         });
-
-        // Clean up file after sending
         setTimeout(() => {
           if (fs.existsSync(filePath)) {
             fs.unlinkSync(filePath);
