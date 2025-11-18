@@ -34,14 +34,10 @@ module.exports = {
     const user2Data = await getUser(target.id, interaction.guild.id);
     const user1Rank = await getUserRank(interaction.user.id, interaction.guild.id);
     const user2Rank = await getUserRank(target.id, interaction.guild.id);
-
-    // Calculate differences
     const levelDiff = user1Data.level - user2Data.level;
     const xpDiff = user1Data.total_xp - user2Data.total_xp;
     const msgDiff = user1Data.messages - user2Data.messages;
-    const rankDiff = user2Rank - user1Rank; // Note: lower rank number is better
-
-    // Determine winner in each category
+    const rankDiff = user2Rank - user1Rank;
     const levelWinner = levelDiff > 0 ? interaction.user : levelDiff < 0 ? target : null;
     const xpWinner = xpDiff > 0 ? interaction.user : xpDiff < 0 ? target : null;
     const msgWinner = msgDiff > 0 ? interaction.user : msgDiff < 0 ? target : null;
@@ -78,8 +74,6 @@ module.exports = {
           inline: false
         }
       );
-
-    // Determine overall winner
     const user1Score = [levelWinner, xpWinner, msgWinner, rankWinner].filter(w => w && w.id === interaction.user.id).length;
     const user2Score = [levelWinner, xpWinner, msgWinner, rankWinner].filter(w => w && w.id === target.id).length;
 
