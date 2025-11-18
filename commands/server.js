@@ -13,8 +13,6 @@ module.exports = {
     const roleRewards = await getRoleRewards(interaction.guild.id);
     const ignoredChannels = await getIgnoredChannels(interaction.guild.id);
     const config = await getGuildConfig(interaction.guild.id);
-
-    // Calculate statistics
     const totalUsers = leaderboard.length;
     const totalXP = leaderboard.reduce((sum, user) => sum + user.total_xp, 0);
     const totalMessages = leaderboard.reduce((sum, user) => sum + user.messages, 0);
@@ -24,14 +22,10 @@ module.exports = {
     const avgXP = totalUsers > 0 
       ? Math.round(totalXP / totalUsers)
       : 0;
-
-    // Get top user
     const topUser = leaderboard[0];
     const topUserTag = topUser 
       ? await interaction.client.users.fetch(topUser.user_id).then(u => u.tag).catch(() => 'Unknown User')
       : 'None';
-
-    // Count users by level ranges
     const beginners = leaderboard.filter(u => u.level < 10).length;
     const intermediate = leaderboard.filter(u => u.level >= 10 && u.level < 30).length;
     const advanced = leaderboard.filter(u => u.level >= 30 && u.level < 50).length;
