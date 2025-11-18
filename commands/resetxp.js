@@ -16,7 +16,6 @@ module.exports = {
     const targetUser = interaction.options.getUser('user');
 
     if (targetUser) {
-      // Reset specific user
       if (targetUser.bot) {
         return interaction.reply({ content: '❌ Cannot reset bot XP!', ephemeral: true });
       }
@@ -27,7 +26,6 @@ module.exports = {
         ephemeral: true
       });
     } else {
-      // Reset entire server - ask for confirmation using buttons
       const confirmButton = new ButtonBuilder()
         .setCustomId('confirm_reset')
         .setLabel('Confirm Reset')
