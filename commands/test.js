@@ -13,8 +13,6 @@ module.exports = {
 
     const testResults = [];
     let allTestsPassed = true;
-
-    // Test 1: Database Connection
     testResults.push('**📊 DATABASE CONNECTION TEST**');
     try {
       const config = await getGuildConfig(interaction.guild.id);
@@ -25,8 +23,6 @@ module.exports = {
       testResults.push(`   └ Error: ${error.message}`);
       allTestsPassed = false;
     }
-
-    // Test 2: XP System Calculations
     testResults.push('\n**🧮 XP SYSTEM CALCULATIONS TEST**');
     try {
       const level5XP = getXPForLevel(5);
@@ -44,8 +40,6 @@ module.exports = {
       testResults.push(`   └ Error: ${error.message}`);
       allTestsPassed = false;
     }
-
-    // Test 3: User Data Retrieval
     testResults.push('\n**👤 USER DATA RETRIEVAL TEST**');
     try {
       const userData = await getUser(interaction.user.id, interaction.guild.id);
@@ -59,8 +53,6 @@ module.exports = {
       testResults.push(`   └ Error: ${error.message}`);
       allTestsPassed = false;
     }
-
-    // Test 4: Leaderboard System
     testResults.push('\n**🏆 LEADERBOARD SYSTEM TEST**');
     try {
       const leaderboard = await getLeaderboard(interaction.guild.id, 5);
@@ -76,8 +68,6 @@ module.exports = {
       testResults.push(`   └ Error: ${error.message}`);
       allTestsPassed = false;
     }
-
-    // Test 5: Role Rewards System
     testResults.push('\n**🎁 ROLE REWARDS SYSTEM TEST**');
     try {
       const roleRewards = await getRoleRewards(interaction.guild.id);
@@ -100,8 +90,6 @@ module.exports = {
       testResults.push(`   └ Error: ${error.message}`);
       allTestsPassed = false;
     }
-
-    // Test 6: Guild Configuration
     testResults.push('\n**⚙️ GUILD CONFIGURATION TEST**');
     try {
       const config = await getGuildConfig(interaction.guild.id);
@@ -122,8 +110,6 @@ module.exports = {
       testResults.push(`   └ Error: ${error.message}`);
       allTestsPassed = false;
     }
-
-    // Test 7: Ignored Channels
     testResults.push('\n**🚫 IGNORED CHANNELS TEST**');
     try {
       const ignoredChannels = await getIgnoredChannels(interaction.guild.id);
@@ -146,8 +132,6 @@ module.exports = {
       testResults.push(`   └ Error: ${error.message}`);
       allTestsPassed = false;
     }
-
-    // Test 8: Bot Permissions
     testResults.push('\n**🔐 BOT PERMISSIONS TEST**');
     try {
       const botMember = interaction.guild.members.cache.get(interaction.client.user.id);
@@ -179,8 +163,6 @@ module.exports = {
       testResults.push(`   └ Error: ${error.message}`);
       allTestsPassed = false;
     }
-
-    // Test 9: Commands Check
     testResults.push('\n**🤖 COMMANDS LOADED TEST**');
     try {
       const commands = interaction.client.commands;
@@ -192,8 +174,6 @@ module.exports = {
       testResults.push(`   └ Error: ${error.message}`);
       allTestsPassed = false;
     }
-
-    // Test 10: Bot Status
     testResults.push('\n**📡 BOT STATUS TEST**');
     try {
       const client = interaction.client;
@@ -212,8 +192,6 @@ module.exports = {
       testResults.push(`   └ Error: ${error.message}`);
       allTestsPassed = false;
     }
-
-    // Create final embed
     const embed = new EmbedBuilder()
       .setColor(allTestsPassed ? '#00FF00' : '#FFA500')
       .setTitle('🧪 Bot Feature Test Results')
@@ -224,8 +202,6 @@ module.exports = {
           : '⚠️ Some tests failed or incomplete. Check details above.' 
       })
       .setTimestamp();
-
-    // Add summary field
     const summary = [
       `**Test Summary**`,
       `• Guild: ${interaction.guild.name}`,
