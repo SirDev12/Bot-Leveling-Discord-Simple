@@ -15,7 +15,6 @@ const client = new Client({
   ],
 });
 
-// Load commands
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
@@ -26,12 +25,10 @@ for (const file of commandFiles) {
   client.commands.set(command.data.name, command);
 }
 
-// Bot ready event
 client.once('ready', () => {
   console.log(`✅ Logged in as ${client.user.tag}!`);
   console.log(`📊 Bot is in ${client.guilds.cache.size} servers`);
 
-  // Rotate through multiple activities (at least 10 different ones)
   const activities = [
     { name: 'your messages 📊', type: ActivityType.Watching },
     { name: 'for commands ⚙️', type: ActivityType.Listening },
@@ -53,12 +50,10 @@ client.once('ready', () => {
     }
   }
 
-  // Set one immediately and rotate every 30 seconds
   setRandomActivity();
   setInterval(setRandomActivity, 30 * 1000);
 });
 
-// Message event - XP gain
 client.on('messageCreate', async (message) => {
   if (message.author.bot || !message.guild) return;
 
@@ -68,10 +63,8 @@ client.on('messageCreate', async (message) => {
     if (result && result.leveledUp) {
       const config = await getGuildConfig(message.guild.id);
 
-      // Handle role rewards
       await handleRoleRewards(message.member, result.newLevel, message.guild.id);
 
-      // Send level up message if enabled
       if (config.announcement_enabled === 1) {
         let levelUpMessage = config.level_up_message || 'GG {user}, you just advanced to level {level}!';
         levelUpMessage = levelUpMessage
@@ -91,7 +84,6 @@ client.on('messageCreate', async (message) => {
           )
           .setTimestamp();
 
-        // Send to specific channel or current channel
         const targetChannel = config.level_up_channel 
           ? message.guild.channels.cache.get(config.level_up_channel) 
           : message.channel;
@@ -105,8 +97,6 @@ client.on('messageCreate', async (message) => {
     console.error('Error processing XP:', error);
   }
 });
-
-// Handle slash commands
 client.on('interactionCreate', async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
@@ -128,25 +118,21 @@ client.on('interactionCreate', async (interaction) => {
   }
 });
 
-// Voice state tracking (for future voice XP)
 const voiceUsers = new Map();
 
 client.on('voiceStateUpdate', (oldState, newState) => {
   const userId = newState.id;
   const guildId = newState.guild.id;
 
-  // User joined a voice channel
   if (!oldState.channelId && newState.channelId) {
     voiceUsers.set(`${userId}-${guildId}`, Date.now());
   }
   
-  // User left a voice channel
   if (oldState.channelId && !newState.channelId) {
     voiceUsers.delete(`${userId}-${guildId}`);
   }
 });
 
-// Error handling
 client.on('error', error => {
   console.error('Discord client error:', error);
 });
@@ -155,5 +141,4 @@ process.on('unhandledRejection', error => {
   console.error('Unhandled promise rejection:', error);
 });
 
-// Login
 client.login(process.env.DISCORD_TOKEN);
